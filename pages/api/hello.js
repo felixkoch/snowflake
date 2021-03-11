@@ -19,7 +19,7 @@ export default async (req, res) => {
   const client = new ClientCredentials(config);
  
   const tokenParams = {
-    scope: 'reservations.read',
+    scope: 'reservations.read integration:ui-integrations.manage',
   };
  
   try {
