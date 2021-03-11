@@ -11,6 +11,7 @@
     "next": "10.0.8",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "simple-oauth2": "^4.2.0"
+    "simple-oauth2": "^4.2.0",
+    "snowflake-sdk": "^1.6.0"
   }
 }
