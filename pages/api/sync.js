@@ -154,7 +154,7 @@ export default async (req, res) => {
         reservation.balance.amount,
         reservation.balance.currency,
         reservation.allFoliosHaveInvoice,
-        reservation.hasCityTax
+        reservation.hasCityTax,
       ]
 
       rows.push(row)
@@ -224,9 +224,61 @@ export default async (req, res) => {
 
     console.log(dbResult)
 
+    await syncFolios(snowflake, accessToken)
+
     res.status(200).end()
   } catch (e) {
     console.log(e)
     res.status(500).end()
   }
+}
+
+async function syncFolios(snowflake, accessToken) {
+  let dbResult
+
+  dbResult = await snowflake.execute(`CREATE OR REPLACE TABLE folios (
+    id VARCHAR(255) PRIMARY KEY,
+    created TIMESTAMP_TZ,
+    updated TIMESTAMP_TZ
+
+  )`)
+
+  console.log(dbResult)
+
+  const response = await fetch("https://api.apaleo.com/finance/v1/folios", {
+    headers: {
+      //'Content-Type': 'application/json',
+      authorization: "Bearer " + accessToken,
+    },
+  })
+
+  if (!response.ok) {
+    console.log(response)
+    throw "Fehler"
+  }
+
+  const data = await response.json()
+
+  console.log(data.folios.length)
+
+  let rows = []
+  data.folios.forEach((folio) => {
+    let row = [folio.id, folio.created, folio.updated]
+
+    rows.push(row)
+  })
+
+  console.log(rows)
+
+  dbResult = await snowflake.execute(
+    `INSERT OVERWRITE INTO folios (
+      id,
+      created,
+      updated
+      )
+      VALUES (?,?,?)`,
+    rows
+  )
+
+  console.log(dbResult)
 }

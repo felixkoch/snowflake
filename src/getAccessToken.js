@@ -15,7 +15,7 @@ export default async function getAccessToken() {
   const client = new ClientCredentials(config)
 
   const tokenParams = {
-    scope: "reservations.read integration:ui-integrations.manage",
+    scope: "reservations.read integration:ui-integrations.manage folios.read",
   }
 
   const accessToken = await client.getToken(tokenParams, { json: true })
