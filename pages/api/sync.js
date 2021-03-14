@@ -239,7 +239,24 @@ async function syncFolios(snowflake, accessToken) {
   dbResult = await snowflake.execute(`CREATE OR REPLACE TABLE folios (
     id VARCHAR(255) PRIMARY KEY,
     created TIMESTAMP_TZ,
-    updated TIMESTAMP_TZ
+    updated TIMESTAMP_TZ,
+    type VARCHAR(255),
+    debitorTitle VARCHAR(255),
+    debitorFirstName VARCHAR(255),
+    debitorName VARCHAR(255),
+    debitorAddressLine1 VARCHAR(255),
+    debitorAddressLine2 VARCHAR(255),
+    debitorPostalCode VARCHAR(255),
+    debitorCity VARCHAR(255),
+    debitorCountryCode VARCHAR(255),
+    debitorCompanyName VARCHAR(255),
+    debitorCompanyTaxId VARCHAR(255),
+    debitorReference VARCHAR(255),
+    closingDate DATE,
+    isMainFolio BOOLEAN,
+    isEmpty BOOLEAN,
+    reservationId VARCHAR(255),
+    bookingId VARCHAR(255)
 
   )`)
 
@@ -263,7 +280,28 @@ async function syncFolios(snowflake, accessToken) {
 
   let rows = []
   data.folios.forEach((folio) => {
-    let row = [folio.id, folio.created, folio.updated]
+    let row = [
+      folio.id,
+      folio.created,
+      folio.updated,
+      folio.type,
+      folio?.debitor?.title,
+      folio?.debitor?.firstName,
+      folio?.debitor?.name,
+      folio?.debitor?.address?.addressLine1,
+      folio?.debitor?.address?.addressLine2,
+      folio?.debitor?.address?.postalCode,
+      folio?.debitor?.address?.city,
+      folio?.debitor?.address?.countryCode,
+      folio?.debitor?.company?.name,
+      folio?.debitor?.company?.taxId,
+      folio?.debitor?.reference,
+      folio.closingDate,
+      folio.isMainFolio,
+      folio.isEmpty,
+      folio?.reservation?.id,
+      folio?.reservation?.bookingId
+    ]
 
     rows.push(row)
   })
@@ -274,9 +312,26 @@ async function syncFolios(snowflake, accessToken) {
     `INSERT OVERWRITE INTO folios (
       id,
       created,
-      updated
+      updated,
+      type,
+      debitorTitle,
+      debitorFirstName,
+      debitorName,
+      debitorAddressLine1,
+      debitorAddressLine2,
+      debitorPostalCode,
+      debitorCity,
+      debitorCountryCode,
+      debitorCompanyName,
+      debitorCompanyTaxId,
+      debitorReference,
+      closingDate,
+      isMainFolio,
+      isEmpty,
+      reservationId,
+      bookingId
       )
-      VALUES (?,?,?)`,
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     rows
   )
 
