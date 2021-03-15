@@ -7,7 +7,7 @@ export default async (req, res) => {
   try {
     const accessToken = await getAccessToken()
 
-    const snowflake = connectSnowflake()
+    const snowflake = await connectSnowflake()
 
     await snowflake.execute("CREATE DATABASE IF NOT EXISTS apaleo ")
 

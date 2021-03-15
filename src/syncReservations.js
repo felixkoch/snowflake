@@ -9,6 +9,8 @@ export default async function syncReservations(snowflake, accessToken) {
     status VARCHAR(255),
     checkInTime TIMESTAMP_TZ,
     checkOutTime TIMESTAMP_TZ,
+    cancellationTime TIMESTAMP_TZ,
+    noShowTime TIMESTAMP_TZ,
     propertyId VARCHAR(255),
     propertyCode VARCHAR(255),
     propertyName VARCHAR(255),
@@ -26,22 +28,41 @@ export default async function syncReservations(snowflake, accessToken) {
     created TIMESTAMP_TZ,
     modified TIMESTAMP_TZ,
     adults NUMBER,
+    childrenAges ARRAY,
+    comment VARCHAR(255),
+    guestComment VARCHAR(255),
     channelCode VARCHAR(255),
+    source VARCHAR(255),
+    primaryGuestTitle VARCHAR(255),
+    primaryGuestGender VARCHAR(255),
     primaryGuestFirstName VARCHAR(255),
     primaryGuestMiddleInitial VARCHAR(255),
     primaryGuestLastName VARCHAR(255),
     primaryGuestEmail VARCHAR(255),
     primaryGuestPhone VARCHAR(255),
     primaryGuestAddressLine1 VARCHAR(255),
+    primaryGuestAddressLine2 VARCHAR(255),
     primaryGuestPostalCode VARCHAR(255),
     primaryGuestCity VARCHAR(255),
     primaryGuestCountryCode VARCHAR(255),
+    primaryGuestNationalityCountryCode VARCHAR(255),
+    primaryGuestIdentificationNumber VARCHAR(255),
+    primaryGuestIdentificationIssueDate DATE,
+    primaryGuestIdentificationType VARCHAR(255),
+    primaryGuestCompanyName VARCHAR(255),
+    primaryGuestCompanyTaxId VARCHAR(255),
+    primaryGuestPreferredLanguage VARCHAR(255),
+    primaryGuestBirthDate DATE,
+    primaryGuestBirthPlace VARCHAR(255),
+
+
     paymentAccountNumber VARCHAR(255),
     paymentAccountHolder VARCHAR(255),
     paymentAccountExpiryMonth VARCHAR(255),
     paymentAccountExpiryYear VARCHAR(255),
     paymentAccountPaymentMethod VARCHAR(255),
     paymentAccountPayerEmail VARCHAR(255),
+    paymentAccountPayerReference VARCHAR(255),
     paymentAccountIsVirtual BOOLEAN,
     paymentAccountIsActive BOOLEAN,
     guaranteeType VARCHAR(255),
@@ -54,10 +75,17 @@ export default async function syncReservations(snowflake, accessToken) {
     noShowFeeCode VARCHAR(255),
     noShowFeeAmount NUMBER(20,2),
     noShowFeeCurrency VARCHAR(255),
+    travelPurpose VARCHAR(255),
     balanceAmount NUMBER(20,2),
     balanceCurrency VARCHAR(255),
+    corporateCode VARCHAR(255),
     allFoliosHaveInvoice BOOLEAN,
-    hasCityTax BOOLEAN
+    hasCityTax BOOLEAN,
+    commissionAmount NUMBER(20,2),
+    commissionCurrency VARCHAR(255),
+    beforeCommissionAmount NUMBER(20,2),
+    beforeCommissionCurrency VARCHAR(255),
+    promoCode VARCHAR(255)
   )`)
 
   console.log(dbResult)
@@ -91,6 +119,8 @@ export default async function syncReservations(snowflake, accessToken) {
       reservation.status,
       reservation.checkInTime,
       reservation.checkOutTime,
+      reservation.cancellationTime,
+      reservation.noShowTime,
       reservation.property.id,
       reservation.property.code,
       reservation.property.name,
@@ -108,22 +138,40 @@ export default async function syncReservations(snowflake, accessToken) {
       reservation.created,
       reservation.modified,
       reservation.adults,
+      reservation.childrenAges,
+      reservation.comment,
+      reservation.guestComment,
       reservation.channelCode,
+      reservation.source,
+      reservation.primaryGuest.title,
+      reservation.primaryGuest.gender,
       reservation.primaryGuest.firstName,
       reservation.primaryGuest.middleInitial,
       reservation.primaryGuest.lastName,
       reservation.primaryGuest.email,
       reservation.primaryGuest.phone,
       reservation.primaryGuest?.address?.addressLine1,
+      reservation.primaryGuest?.address?.addressLine2,
       reservation.primaryGuest?.address?.postalCode,
       reservation.primaryGuest?.address?.city,
       reservation.primaryGuest?.address?.countryCode,
+      reservation.primaryGuest.nationalityCountryCode,
+      reservation.primaryGuest.identificationNumber,
+      reservation.primaryGuest.identificationIssueDate,
+      reservation.primaryGuest.identificationType,
+      reservation.primaryGuest?.company?.name,
+      reservation.primaryGuest?.company?.taxId,
+      reservation.primaryGuest?.preferredLanguage,
+      reservation.primaryGuest?.birthDate,
+      reservation.primaryGuest?.birthPlace,
+
       reservation.paymentAccount?.accountNumber,
       reservation.paymentAccount?.accountHolder,
       reservation.paymentAccount?.expiryMonth,
       reservation.paymentAccount?.expiryYear,
       reservation.paymentAccount?.paymentMethod,
       reservation.paymentAccount?.payerEmail,
+      reservation.paymentAccount?.payerReference,
       reservation.paymentAccount?.isVirtual,
       reservation.paymentAccount?.isActive,
       reservation.guaranteeType,
@@ -136,16 +184,25 @@ export default async function syncReservations(snowflake, accessToken) {
       reservation.noShowFee.code,
       reservation.noShowFee.fee.amount,
       reservation.noShowFee.fee.currency,
+      reservation.travelPurpose,
       reservation.balance.amount,
       reservation.balance.currency,
+      reservation.corporateCode,
       reservation.allFoliosHaveInvoice,
       reservation.hasCityTax,
+
+      reservation?.commission?.commissionAmount?.amount,
+      reservation?.commission?.commissionAmmount?.currency,
+      reservation?.commission?.beforeCommission?.amount,
+      reservation?.commission?.beforeCommission?.currency,
+      reservation.promoCode
+
+
     ]
 
     rows.push(row)
   })
 
-  console.time("dbsave")
   dbResult = await snowflake.execute(
     `INSERT OVERWRITE INTO reservations (id,
       bookingId,
@@ -154,6 +211,8 @@ export default async function syncReservations(snowflake, accessToken) {
       status,
       checkInTime,
       checkOutTime,
+      cancellationTime,
+      noShowTime,
       propertyId,
       propertyCode,
       propertyName,
@@ -171,43 +230,77 @@ export default async function syncReservations(snowflake, accessToken) {
       created,
       modified,
       adults,
+      childrenAges,
+      comment,
+      guestComment,
       channelCode,
+      source,
+      primaryGuestTitle,
+      primaryGuestGender,
       primaryGuestFirstName,
       primaryGuestMiddleInitial,
       primaryGuestLastName,
       primaryGuestEmail,
       primaryGuestPhone,
       primaryGuestAddressLine1,
+      primaryGuestAddressLine2,
       primaryGuestPostalCode,
       primaryGuestCity,
       primaryGuestCountryCode,
+      primaryGuestNationalityCountryCode,
+      primaryGuestIdentificationNumber,
+      primaryGuestIdentificationIssueDate,
+      primaryGuestIdentificationType,
+      primaryGuestCompanyName,
+      primaryGuestCompanyTaxId,
+      primaryGuestPreferredLanguage,
+      primaryGuestBirthDate,
+      primaryGuestBirthPlace,
+
+
       paymentAccountNumber,
       paymentAccountHolder,
       paymentAccountExpiryMonth,
       paymentAccountExpiryYear,
       paymentAccountPaymentMethod,
       paymentAccountPayerEmail,
+      paymentAccountPayerReference,
       paymentAccountIsVirtual,
       paymentAccountIsActive,
+
       guaranteeType,
+
       cancellationFeeId,
       cancellationFeeCode,
       cancellationFeeDueDateTime,
       cancellationFeeAmount,
       cancellationFeeCurrency,
+      
       noShowFeeId,
       noShowFeeCode,
       noShowFeeAmount,
       noShowFeeCurrency,
+
+      travelPurpose,
+
       balanceAmount,
       balanceCurrency,
+
+      corporateCode,
+
       allFoliosHaveInvoice,
-      hasCityTax
+      hasCityTax,
+
+      commissionAmount,
+      commissionCurrency,
+      beforeCommissionAmount,
+      beforeCommissionCurrency,
+      promoCode
       )
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     rows
   )
-  console.timeEnd("dbsave")
+
 
   console.log(dbResult)
 }
