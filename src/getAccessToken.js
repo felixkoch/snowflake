@@ -19,8 +19,6 @@ export default async function getAccessToken() {
   }
 
   const accessToken = await client.getToken(tokenParams, { json: true })
-  console.log(accessToken)
-  console.log(accessToken.token.access_token)
 
   return accessToken.token.access_token
 }
