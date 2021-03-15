@@ -255,8 +255,19 @@ async function syncFolios(snowflake, accessToken) {
     closingDate DATE,
     isMainFolio BOOLEAN,
     isEmpty BOOLEAN,
-    reservationId VARCHAR(255),
-    bookingId VARCHAR(255)
+    reservationId VARCHAR(255) REFERENCES reservations(id),
+    bookingId VARCHAR(255),
+    companyId VARCHAR(255),
+    companyCode VARCHAR(255),
+    companyName VARCHAR(255),
+    companyCanCheckOutOnAr BOOLEAN,
+    balanceAmount NUMBER(20,2),
+    balanceCurrency VARCHAR(255),
+    checkedOutOnAccountsReceivable BOOLEAN,
+    warnings ARRAY,
+    allowedActions ARRAY,
+    relatedInvoices ARRAY,
+    status VARCHAR(255)
 
   )`)
 
@@ -300,13 +311,22 @@ async function syncFolios(snowflake, accessToken) {
       folio.isMainFolio,
       folio.isEmpty,
       folio?.reservation?.id,
-      folio?.reservation?.bookingId
+      folio?.reservation?.bookingId,
+      folio?.company?.id,
+      folio?.company?.code,
+      folio?.company?.name,
+      folio?.company?.canCheckOutOnAr,
+      folio?.balance?.amount,
+      folio?.balance?.currency,
+      folio.checkedOutOnAccountsReceivable,
+      folio.folioWarnings,
+      folio.allowedActions,
+      folio.relatedInvoices,
+      folio.status
     ]
 
     rows.push(row)
   })
-
-  console.log(rows)
 
   dbResult = await snowflake.execute(
     `INSERT OVERWRITE INTO folios (
@@ -329,9 +349,20 @@ async function syncFolios(snowflake, accessToken) {
       isMainFolio,
       isEmpty,
       reservationId,
-      bookingId
+      bookingId,
+      companyId,
+      companyCode,
+      companyName,
+      companyCanCheckOutOnAr,
+      balanceAmount,
+      balanceCurrency,
+      checkedOutOnAccountsReceivable,
+      warnings,
+      allowedActions,
+      relatedInvoices,
+      status
       )
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     rows
   )
 
