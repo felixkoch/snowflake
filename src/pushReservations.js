@@ -92,6 +92,7 @@ export default async function pushReservations(snowflake, reservations) {
 
     ]
 
+
     rows.push(row)
   })
 

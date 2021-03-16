@@ -37,6 +37,8 @@ export default async function pushFolios(snowflake, folios) {
       folio.status,
     ]
 
+    console.log(row)
+
     rows.push(row)
   })
 
