@@ -70,7 +70,5 @@ async function updateFolio(folioId)
 
   const folio = await response.json()
 
-  console.log(folio)
-
   await pushFolios(snowflake, [folio])
 }

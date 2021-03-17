@@ -31,13 +31,11 @@ export default async function pushFolios(snowflake, folios) {
       folio?.balance?.amount,
       folio?.balance?.currency,
       folio.checkedOutOnAccountsReceivable,
-      folio.folioWarnings,
-      folio.allowedActions,
-      folio.relatedInvoices,
+      //folio.folioWarnings,
+      //folio.allowedActions,
+      //folio.relatedInvoices,
       folio.status,
     ]
-
-    console.log(row)
 
     rows.push(row)
   })
@@ -71,12 +69,9 @@ export default async function pushFolios(snowflake, folios) {
       balanceAmount,
       balanceCurrency,
       checkedOutOnAccountsReceivable,
-      warnings,
-      allowedActions,
-      relatedInvoices,
       status
       )
-      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+      VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
     rows
   )
 

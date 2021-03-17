@@ -31,9 +31,6 @@ export default async function syncFolios(snowflake, accessToken) {
     balanceAmount NUMBER(20,2),
     balanceCurrency VARCHAR(255),
     checkedOutOnAccountsReceivable BOOLEAN,
-    warnings ARRAY,
-    allowedActions ARRAY,
-    relatedInvoices ARRAY,
     status VARCHAR(255)
 
   )`)
