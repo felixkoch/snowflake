@@ -118,7 +118,7 @@ export async function getServerSideProps(ctx) {
     }
 
     response = await fetch(
-      "https://integration.apaleo.com/integration/v1/ui-integrations/DashboardAccountContext",
+      "https://integration.apaleo.com/integration/v1/ui-integrations/AccountMenuApps",
       {
         method: "POST",
         headers: {
