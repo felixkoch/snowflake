@@ -31,7 +31,7 @@ async function processReservation(reservationId)
   const snowflake = await connectSnowflake()
 
   const response = await fetch(
-    "https://api.apaleo.com/booking/v1/reservations/"+reservationId,
+    "https://api.apaleo.com/booking/v1/reservations/"+reservationId+"?expand=timeSlices",
     {
       headers: {
         //'Content-Type': 'application/json',
@@ -46,6 +46,8 @@ async function processReservation(reservationId)
   }
 
   const reservation = await response.json()
+
+  console.log(reservation)
 
   console.log('#############')
   const dbResult = await snowflake.execute(`SELECT id FROM reservations WHERE id = ?` ,[reservation.id])
