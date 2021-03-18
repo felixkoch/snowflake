@@ -41,7 +41,7 @@ export default async function pushFolios(snowflake, folios) {
   })
 
   dbResult = await snowflake.execute(
-    `INSERT OVERWRITE INTO folios (
+    `INSERT INTO folios (
       id,
       created,
       updated,

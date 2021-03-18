@@ -1,4 +1,6 @@
-export default async function pushReservations(snowflake, reservations) {
+export default async function insertReservations(snowflake, reservations) {
+  console.log("insertReservations()")
+
   let dbResult
   let rows = []
   
@@ -97,7 +99,7 @@ export default async function pushReservations(snowflake, reservations) {
   })
 
   dbResult = await snowflake.execute(
-    `INSERT OVERWRITE INTO reservations (id,
+    `INSERT INTO reservations (id,
       bookingId,
       blockId,
       groupName,

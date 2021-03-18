@@ -1,7 +1,8 @@
 import connectSnowflake from "../../src/connectSnowflake";
 import getAccessToken from "../../src/getAccessToken";
 import pushFolios from "../../src/pushFolios";
-import pushReservations from "../../src/pushReservations";
+import insertReservations from "../../src/insertReservations";
+import updateReservation from "../../src/updateReservation";
 
 export default async (req, res) => {
 
@@ -11,18 +12,20 @@ export default async (req, res) => {
 
   if(topic === "Reservation")
   {
-    await updateReservation(data.entityId)
+    await processReservation(data.entityId)
   }
   else if(topic === "Folio")
   {
-    await updateFolio(data.entityId)
+    await processFolio(data.entityId)
   }
 
   res.status(200).end()
 }
 
-async function updateReservation(reservationId)
+async function processReservation(reservationId)
 {
+  console.log('updateReservation()')
+
   const accessToken = await getAccessToken()
   const snowflake = await connectSnowflake()
 
@@ -43,12 +46,21 @@ async function updateReservation(reservationId)
 
   const reservation = await response.json()
 
-  console.log(reservation)
-
-  await pushReservations(snowflake, [reservation])
+  console.log('#############')
+  const dbResult = await snowflake.execute(`SELECT id FROM reservations WHERE id = ?` ,[reservation.id])
+  console.log(dbResult)
+  if(dbResult.length === 0)
+  {
+    await insertReservations(snowflake, [reservation])
+  }
+  else
+  {
+    await updateReservation(snowflake, reservation)
+  }
+ 
 }
 
-async function updateFolio(folioId)
+async function processFolio(folioId)
 {
   const accessToken = await getAccessToken()
   const snowflake = await connectSnowflake()

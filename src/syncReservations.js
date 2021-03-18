@@ -1,6 +1,7 @@
-import pushReservations from "./pushReservations"
+import insertReservations from "./insertReservations"
 
 export default async function syncReservations(snowflake, accessToken) {
+  console.log('syncReservations()')
   let dbResult
 
   dbResult = await snowflake.execute(`CREATE OR REPLACE TABLE reservations (
@@ -111,5 +112,5 @@ export default async function syncReservations(snowflake, accessToken) {
 
   console.log(data.reservations.length)
 
-  await pushReservations(snowflake, data.reservations)
+  await insertReservations(snowflake, data.reservations)
 }
