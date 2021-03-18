@@ -1,4 +1,6 @@
-export default async function pushFolios(snowflake, folios) {
+export default async function insertFolios(snowflake, folios) {
+  console.log('insertFolios()')
+
   let dbResult
   let rows = []
 

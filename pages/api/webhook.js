@@ -1,7 +1,8 @@
 import connectSnowflake from "../../src/connectSnowflake";
 import getAccessToken from "../../src/getAccessToken";
-import pushFolios from "../../src/pushFolios";
+import insertFolios from "../../src/insertFolios";
 import insertReservations from "../../src/insertReservations";
+import updateFolio from "../../src/updateFolio";
 import updateReservation from "../../src/updateReservation";
 
 export default async (req, res) => {
@@ -82,5 +83,17 @@ async function processFolio(folioId)
 
   const folio = await response.json()
 
-  await pushFolios(snowflake, [folio])
+  console.log('#############')
+  const dbResult = await snowflake.execute(`SELECT id FROM folios WHERE id = ?` ,[folio.id])
+  console.log(dbResult)
+  if(dbResult.length === 0)
+  {
+    await insertFolios(snowflake, [folio])
+  }
+  else
+  {
+    await updateFolio(snowflake, folio)
+  }
+
+  
 }

@@ -1,4 +1,4 @@
-import pushFolios from "./pushFolios"
+import insertFolios from "./insertFolios"
 
 export default async function syncFolios(snowflake, accessToken) {
   let dbResult
@@ -53,5 +53,5 @@ export default async function syncFolios(snowflake, accessToken) {
 
   console.log(data.folios.length)
 
-  await pushFolios(snowflake, data.folios)
+  await insertFolios(snowflake, data.folios)
 }
