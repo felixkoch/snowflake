@@ -16,7 +16,7 @@ export default async function syncReservations(snowflake, accessToken) {
     checkOutTime TIMESTAMP_TZ,
     cancellationTime TIMESTAMP_TZ,
     noShowTime TIMESTAMP_TZ,
-    propertyId VARCHAR(255),
+    propertyId VARCHAR(255) REFERENCES properties(id),
     propertyCode VARCHAR(255),
     propertyName VARCHAR(255),
     ratePlanId VARCHAR(255),

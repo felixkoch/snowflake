@@ -18,6 +18,11 @@ export default function Home() {
         method: "POST",
       })
 
+      if (!response.ok) {
+        console.log(response)
+        throw "Fehler"
+      }
+
       window.parent.postMessage(
         JSON.stringify({
           type: "notification",
