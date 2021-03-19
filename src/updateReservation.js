@@ -1,6 +1,10 @@
+import insertTimeSlices from "./insertTimeSlices"
+import normalizeTimeSlices from "./normalizeTimeSlices"
+
 export default async function updateReservation(snowflake, reservation) {
   console.log("updateReservation()")
 
+  let dbResult
 
   const row = [
     reservation.bookingId,
@@ -89,7 +93,7 @@ export default async function updateReservation(snowflake, reservation) {
     reservation.id,
   ]
 
-  const dbResult = await snowflake.execute(
+  dbResult = await snowflake.execute(
     `UPDATE reservations
       SET bookingId = ?,
       blockId = ?,
@@ -188,4 +192,11 @@ export default async function updateReservation(snowflake, reservation) {
   )
 
   console.log(dbResult)
+
+  dbResult = await snowflake.execute(`DELETE FROM timeslices WHERE reservationId = ?`, [reservation.id])
+
+  console.log(dbResult)
+  
+  await insertTimeSlices(snowflake, normalizeTimeSlices(reservation))
+
 }

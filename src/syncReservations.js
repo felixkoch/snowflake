@@ -1,4 +1,6 @@
 import insertReservations from "./insertReservations"
+import insertTimeSlices from "./insertTimeSlices"
+import normalizeTimeSlices from "./normalizeTimeSlices"
 
 export default async function syncReservations(snowflake, accessToken) {
   console.log('syncReservations()')
@@ -94,7 +96,7 @@ export default async function syncReservations(snowflake, accessToken) {
   console.log(dbResult)
 
   const response = await fetch(
-    "https://api.apaleo.com/booking/v1/reservations",
+    "https://api.apaleo.com/booking/v1/reservations?expand=timeSlices",
     {
       headers: {
         //'Content-Type': 'application/json',
@@ -110,7 +112,13 @@ export default async function syncReservations(snowflake, accessToken) {
 
   const data = await response.json()
 
-  console.log(data.reservations.length)
-
   await insertReservations(snowflake, data.reservations)
+
+  let timeSlices = []
+  data.reservations.forEach(reservation => {
+    timeSlices= [...timeSlices, ...normalizeTimeSlices(reservation)]
+  })
+
+  await insertTimeSlices(snowflake, timeSlices)
+
 }
