@@ -52,6 +52,11 @@ async function processReservation(reservationId) {
 
   if (dbResult.length === 0) {
     await insertReservations(snowflake, [reservation])
+
+    const timeSlices = normalizeTimeSlices(reservation)
+  
+    await insertTimeSlices(snowflake, timeSlices)
+
   } else {
     await updateReservation(snowflake, reservation)
   }
