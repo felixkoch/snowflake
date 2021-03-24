@@ -2,6 +2,8 @@ import connectSnowflake from "../../src/connectSnowflake"
 import getAccessToken from "../../src/getAccessToken"
 import insertFolios from "../../src/insertFolios"
 import insertReservations from "../../src/insertReservations"
+import insertTimeSlices from "../../src/insertTimeSlices"
+import normalizeTimeSlices from "../../src/normalizeTimeSlices"
 import updateFolio from "../../src/updateFolio"
 import updateReservation from "../../src/updateReservation"
 
@@ -54,7 +56,6 @@ async function processReservation(reservationId) {
     await insertReservations(snowflake, [reservation])
 
     const timeSlices = normalizeTimeSlices(reservation)
-  
     await insertTimeSlices(snowflake, timeSlices)
 
   } else {
