@@ -1,4 +1,11 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Apaleo Snowflake Connector
+
+This app extracts data (e.g. inventory, reservations, folio) from [apaleo](https://apaleo.com) (via API calls and webhooks) and synchronises it with the [Snowflake](https://snowflake.com) data warehouse (cloud data plattform).
+
+The aim of the project is to make the data obtained in apaleo accessible to a business intelligence software (e.g. Microsoft Power BI) and to evaluate it with regard to KPI and data-driven insights.
+
+## Warning
+This app is a proof of concept. There is no authentication in this app.
 
 ## Getting Started
 
