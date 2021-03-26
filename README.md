@@ -7,6 +7,10 @@ The aim of the project is to make the data obtained in apaleo accessible to a bu
 ## Warning
 This app is a proof of concept. There is no authentication in this app.
 
+## Power BI Playground
+
+If you want to experiment with some apaleo data and Power BI, you can use the `hackathon.pbix` in the repository. The data, measures, KPIs and reports shown are stored there for offline usage.
+
 ## Getting Started
 
 First, run the development server:
