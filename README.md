@@ -5,7 +5,16 @@ This app extracts data (e.g. inventory, reservations, folio) from [apaleo](https
 The aim of the project is to make the data obtained in apaleo accessible to a business intelligence software (e.g. Microsoft Power BI) and to evaluate it with regard to KPI and data-driven insights.
 
 ## Warning
+
 This app is a proof of concept. There is no authentication in this app.
+
+## Getting Started
+
+This app is written with the [next.js](https://nextjs.org/) React Framwork.
+
+In order for the apaleo webhooks and UI integration to work, it must be accessible (even in development) via an SSL encrypted public endpoint on port 443.
+
+You can use ngrok [ngrok](https://ngrok.com/) to get an SSL encrypted public URL and tunnel to your development system.
 
 ## Power BI Playground
 
