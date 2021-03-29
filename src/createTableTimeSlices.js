@@ -21,5 +21,4 @@ export default async function createTableTimeSlices(snowflake) {
 
   )`)
 
-  console.log(dbResult)
 }

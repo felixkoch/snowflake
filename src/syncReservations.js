@@ -3,7 +3,6 @@ import insertTimeSlices from "./insertTimeSlices"
 import normalizeTimeSlices from "./normalizeTimeSlices"
 
 export default async function syncReservations(snowflake, accessToken) {
-  console.log('syncReservations()')
   let dbResult
 
   dbResult = await snowflake.execute(`CREATE OR REPLACE TABLE reservations (
@@ -92,8 +91,6 @@ export default async function syncReservations(snowflake, accessToken) {
     beforeCommissionCurrency VARCHAR(255),
     promoCode VARCHAR(255)
   )`)
-
-  console.log(dbResult)
 
   const response = await fetch(
     "https://api.apaleo.com/booking/v1/reservations?expand=timeSlices",

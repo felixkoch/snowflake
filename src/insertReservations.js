@@ -1,5 +1,4 @@
 export default async function insertReservations(snowflake, reservations) {
-  console.log("insertReservations()")
 
   let dbResult
   let rows = []
@@ -196,6 +195,4 @@ export default async function insertReservations(snowflake, reservations) {
     rows
   )
 
-
-  console.log(dbResult)
 }

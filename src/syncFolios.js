@@ -35,8 +35,6 @@ export default async function syncFolios(snowflake, accessToken) {
 
   )`)
 
-  console.log(dbResult)
-
   const response = await fetch("https://api.apaleo.com/finance/v1/folios", {
     headers: {
       //'Content-Type': 'application/json',
@@ -50,8 +48,6 @@ export default async function syncFolios(snowflake, accessToken) {
   }
 
   const data = await response.json()
-
-  console.log(data.folios.length)
 
   await insertFolios(snowflake, data.folios)
 }

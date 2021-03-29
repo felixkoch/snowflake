@@ -8,8 +8,6 @@ import updateFolio from "../../src/updateFolio"
 import updateReservation from "../../src/updateReservation"
 
 export default async (req, res) => {
-  console.log(req.body)
-
   const { topic, data } = req.body
 
   if (topic === "Reservation") {
@@ -22,8 +20,6 @@ export default async (req, res) => {
 }
 
 async function processReservation(reservationId) {
-  console.log("updateReservation()")
-
   const accessToken = await getAccessToken()
   const snowflake = await connectSnowflake()
 
@@ -50,14 +46,12 @@ async function processReservation(reservationId) {
     `SELECT id FROM reservations WHERE id = ?`,
     [reservation.id]
   )
-  console.log(dbResult)
 
   if (dbResult.length === 0) {
     await insertReservations(snowflake, [reservation])
 
     const timeSlices = normalizeTimeSlices(reservation)
     await insertTimeSlices(snowflake, timeSlices)
-
   } else {
     await updateReservation(snowflake, reservation)
   }
@@ -88,8 +82,6 @@ async function processFolio(folioId) {
     `SELECT id FROM folios WHERE id = ?`,
     [folio.id]
   )
-  console.log(dbResult)
-
   if (dbResult.length === 0) {
     await insertFolios(snowflake, [folio])
   } else {

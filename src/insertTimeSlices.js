@@ -1,6 +1,4 @@
 export default async function insertTimeSlices(snowflake, timeSlices) {
-  console.log("insertTimeSlices()")
-
   let dbResult
 
   dbResult = await snowflake.execute(
@@ -28,5 +26,4 @@ export default async function insertTimeSlices(snowflake, timeSlices) {
     timeSlices
   )
 
-  console.log(dbResult)
 }

@@ -1,9 +1,6 @@
-import Head from "next/head"
-
 import Container from "@material-ui/core/Container"
 import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
-import Button from "@material-ui/core/Button"
 import getAccessToken from "../src/getAccessToken"
 
 export default function Setup() {
@@ -20,10 +17,7 @@ export default function Setup() {
 
 export async function getServerSideProps(ctx) {
   try {
-    console.log("setup")
-
     const host = ctx.req.headers["x-forwarded-host"] || ctx.req.headers.host
-    console.log(host)
 
     const accessToken = await getAccessToken()
 
@@ -42,7 +36,6 @@ export async function getServerSideProps(ctx) {
     if (response.status === 200) {
       const subscriptions = await response.json()
 
-      console.log(subscriptions)
       await Promise.all(
         subscriptions.map(async (subscription) => {
           const response = await fetch(
@@ -96,8 +89,6 @@ export async function getServerSideProps(ctx) {
     if (response.status === 200) {
       const integrations = await response.json()
 
-      console.log(integrations)
-
       await Promise.all(
         integrations.uiIntegrations.map(async (integration) => {
           const response = await fetch(
@@ -111,7 +102,7 @@ export async function getServerSideProps(ctx) {
           )
           if (!response.ok) {
             console.log(response)
-            throw "Fehler3"
+            throw "Fehler"
           }
         })
       )

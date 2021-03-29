@@ -1,5 +1,4 @@
 export default async function updateFolio(snowflake, folio) {
-  console.log('updateFolio()')
   const row = [
     folio.created,
     folio.updated,
@@ -67,5 +66,4 @@ export default async function updateFolio(snowflake, folio) {
     [row]
   )
 
-  console.log(dbResult)
 }

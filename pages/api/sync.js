@@ -7,13 +7,12 @@ import syncProperties from "../../src/syncProperties"
 
 export default async (req, res) => {
   try {
-
     const accessToken = await getAccessToken()
 
     const snowflake = await connectSnowflake()
 
     await snowflake.execute("CREATE DATABASE IF NOT EXISTS apaleo ")
-    
+
     await syncProperties(snowflake, accessToken)
 
     await createTableTimeSlices(snowflake)

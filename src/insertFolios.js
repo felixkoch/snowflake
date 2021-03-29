@@ -1,6 +1,4 @@
 export default async function insertFolios(snowflake, folios) {
-  console.log('insertFolios()')
-
   let dbResult
   let rows = []
 
@@ -77,5 +75,4 @@ export default async function insertFolios(snowflake, folios) {
     rows
   )
 
-  console.log(dbResult)
 }

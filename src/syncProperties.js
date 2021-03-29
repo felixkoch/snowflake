@@ -13,8 +13,6 @@ export default async function syncProperties(snowflake, accessToken) {
 
   )`)
 
-  console.log(dbResult)
-
   const response = await fetch(
     "https://api.apaleo.com/inventory/v1/properties",
     {
@@ -79,7 +77,5 @@ export default async function syncProperties(snowflake, accessToken) {
   VALUES(?,?,?,?,?,?,?)`,
     rows
   )
-
-  console.log(dbResult)
 
 }
