@@ -1,6 +1,7 @@
 export default async function createTableTimeSlices(snowflake) {
+  
   const dbResult = await snowflake.execute(`CREATE OR REPLACE TABLE timeslices (
-    reservationId VARCHAR(255) REFERENCES reservations(id),
+    reservationId VARCHAR(255),
     "FROM" TIMESTAMP_TZ,
     "TO" TIMESTAMP_TZ,
     serviceDate DATE,

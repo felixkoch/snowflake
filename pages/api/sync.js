@@ -20,6 +20,8 @@ export default async (req, res) => {
     await syncReservations(snowflake, accessToken)
     await syncFolios(snowflake, accessToken)
 
+    await snowflake.execute("ALTER TABLE timeslices ADD FOREIGN KEY (reservationId) REFERENCES reservations(id)")
+
     res.status(200).end()
   } catch (e) {
     console.log(e)
