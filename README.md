@@ -4,6 +4,10 @@ This app extracts data (e.g. inventory, reservations, folio) from [apaleo](https
 
 The aim of the project is to make the data obtained in apaleo accessible to a business intelligence software (e.g. Microsoft Power BI) and to evaluate it with regard to KPI and data-driven insights.
 
+## Demo
+
+Please find the demo in the `demo.mp4` [here](https://github.com/felixkoch/snowflake/blob/main/demo.mp4?raw=true).
+
 ## Warning
 
 This app is a proof of concept. There is no authentication in this app.
